@@ -1,0 +1,84 @@
+debito = 0
+limite_saque = 3
+contador_saque = 0
+
+# Mensagens padrão 
+def exibir_mensagem():
+    print("Olá! Seja bem-vindo ao seu Banco.")
+
+def exibir_mensagem_2():
+    operacao = int(input("""
+      Digite a operação desejada:
+      1 - Saque
+      2 - Depósito
+      3 - Consultar extrato
+      4 - Sair
+      Digite 1, 2, 3 ou 4: """))
+    return operacao
+
+def sair():
+    print("Obrigado por usar nosso banco. Até logo!")
+
+def exibir_mensagem_deposito(deposito):
+    print(f"Foi depositado o valor de R${deposito:.2f}.")
+
+def exibir_mensagem_saque(saque):
+    print(f"Você sacou o valor de R${saque:.2f}.")
+
+def exibir_mensagem_extrato(saldo):
+    print(f"Seu saldo é de R${saldo:.2f}.")
+
+def exibir_mensagem_3():
+    nova_operacao = int(input("""
+      Você concluiu a sua operação! Deseja realizar outra?
+      1 - Sim
+      2 - Não
+      Digite 1 ou 2: """))
+    return nova_operacao 
+
+while True:
+    exibir_mensagem()
+    operacao = exibir_mensagem_2()
+    
+    # Depósito 
+    if operacao == 2:
+        deposito = float(input("Quanto você deseja depositar? "))
+        debito += deposito 
+        exibir_mensagem_deposito(deposito)
+
+    # Saque
+    elif operacao == 1:
+        if contador_saque >= limite_saque:
+            print("Você excedeu o limite de saques.")
+            exibir_mensagem_3()
+        else:
+            saque = float(input("Quanto você deseja sacar? "))
+            if saque <= 0:
+                print("O valor do saque deve ser maior que 0.")
+            elif saque > debito:
+                print("Você não possui esse valor para sacar. Por favor, refaça a operação.")
+            elif saque > 500:
+                print("Não é possível realizar saques acima de R$ 500,00. Por favor, realize uma nova operação.")
+            else:
+                debito -= saque
+                contador_saque += 1 
+                exibir_mensagem_saque(saque)
+
+    # Extrato
+    elif operacao == 3:
+        exibir_mensagem_extrato(debito)
+
+    # Sair
+    elif operacao == 4:
+        sair()
+        break
+
+    # Operação inválida
+    else:
+        print("Operação inválida. Por favor, escolha 1, 2, 3 ou 4.")
+
+    # Nova operação
+    nova_operacao = exibir_mensagem_3()
+    if nova_operacao == 2:
+        sair()
+        break 
